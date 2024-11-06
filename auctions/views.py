@@ -158,6 +158,7 @@ def add_listing(request):
             category=category,
             user=current_user,
         )
+        
         new_listing.save()
         messages.success(request, "New listing created successfully")
         return util.redirect_to(TEMPLATE_INDEX)
