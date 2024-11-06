@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block page %}
+    Categories
+{% endblock %}
+
+{% block body %}
+<section class="container mt-5">
+    <h2 class="text-center mb-4">Categories</h2>
+
+    <div class="row">
+        {% for category in page.object_list %}
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'auctions:get_listing_by_category' category.name %}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">{{ category.name }}</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if has_more_than_nine_categories %}
+      <!-- Pagination -->
+      {% include "auctions/partials/pagination.html" with url_name='auctions:categories' %}
+    {% endif %}
+</section>
+{% endblock %}

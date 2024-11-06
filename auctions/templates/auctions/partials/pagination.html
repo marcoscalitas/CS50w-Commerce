@@ -1,0 +1,62 @@
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        <!-- Botão Anterior -->
+        <li class="page-item {% if not page.has_previous %}disabled{% endif %}">
+            {% if page.has_previous %}
+                {% if url_name == "auctions:listing_details" %}
+                    <a class="page-link" href="{% url url_name listing_id %}?page={{ page.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                {% elif url_name == "auctions:get_listing_by_category" %}
+                    <a class="page-link" href="{% url url_name category %}?page={{ page.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                {% else %}
+                    <a class="page-link" href="{% url url_name %}?page={{ page.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                {% endif %}
+            {% else %}
+                <span class="page-link">&laquo;</span>
+            {% endif %}
+        </li>
+
+        <!-- Números das Páginas -->
+        {% for num in page.paginator.page_range %}
+            <li class="page-item {% if page.number == num %}active{% endif %}" aria-current="{% if page.number == num %}page{% endif %}">
+                {% if page.number == num %}
+                    <span class="page-link">{{ num }}</span>
+                {% else %}
+                    {% if url_name == "auctions:listing_details" %}
+                        <a class="page-link" href="{% url url_name listing_id %}?page={{ num }}">{{ num }}</a>
+                    {% elif url_name == "auctions:get_listing_by_category" %}    
+                        <a class="page-link" href="{% url url_name category %}?page={{ num }}">{{ num }}</a>
+                    {% else %}
+                        <a class="page-link" href="{% url url_name %}?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endif %}
+            </li>
+        {% endfor %}
+
+        <!-- Botão Próximo -->
+        <li class="page-item {% if not page.has_next %}disabled{% endif %}">
+            {% if page.has_next %}
+                {% if url_name == "auctions:listing_details" %}
+                    <a class="page-link" href="{% url url_name listing_id %}?page={{ page.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                {% elif url_name == "auctions:get_listing_by_category" %}
+                    <a class="page-link" href="{% url url_name category %}?page={{ page.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                {% else %}
+                    <a class="page-link" href="{% url url_name %}?page={{ page.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                {% endif %}
+            {% else %}
+                <span class="page-link">&raquo;</span>
+            {% endif %}
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,80 @@
+{% extends "auctions/layout.html" %}
+
+{% block page %}
+    Watchlist
+{% endblock %}
+
+{% block body %}
+<section class="container mt-5">
+    <!-- cart -->
+    <div class="col-lg-12">
+        <div class="card border shadow-0">
+
+            <h4 class="m-4 card-title mb-4">Your Watchist</h4>
+          {% for listing in page.object_list  %}
+                <div class="m-4">
+                    <div class="row gy-3 mb-4">
+                    <div class="col-lg-5">
+                        <div class="me-lg-5">
+                        <div class="d-flex">
+                            <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="border rounded me-3" style="width: 96px; height: 96px;" />
+                            <div>
+                            <a href="{% url "auctions:listing_details" listing.id %}" class="nav-link">
+                                <h5>
+                                    {{ listing.title }}
+                                </h5>
+                            </a>
+                            <p class="text-muted limited-description">{{ listing.description }}</p>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+                        <div class="">
+                        <text class="h6">Price: ${{ listing.price }}</text> <br />
+                        <small class="text-muted text-nowrap">Last Bid: ${{ listing.highest_bid_amount|floatformat:2 }} </small>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+                        <div class="">
+                        <text class="h6">Auction Winner</text> <br />
+                        <small class="text-muted text-nowrap">
+                            {% if not listing.is_active and listing.auction_winner %}
+                                {{ listing.auction_winner }}
+                                {% else %}
+                                No winner yet
+                            {% endif %}
+                        </small>
+                        </div>
+                    </div>
+                    <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                        <div class="float-md-end">
+                        <form action="{% url 'auctions:remove_from_watchlist' listing.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-light border text-danger icon-hover-danger">Remove From Watchlist</button>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="mx-4">
+                    <p class="text-muted">
+                        Your watchlist is empty
+                    </p>
+                  </div>
+          {% endfor %}
+
+          {% if not is_watchlist_empty and has_more_than_four_listings %}
+            <div class="border-top pt-4 mx-4 mb-4">
+                <!-- Pagination -->
+                {% include "auctions/partials/pagination.html" with url_name='auctions:watchlist' %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <!-- cart -->
+</section>
+
+{% include 'auctions/partials/listing.html' with listings=recommended_listings title="Recommended Listings" %}
+{% endblock %}

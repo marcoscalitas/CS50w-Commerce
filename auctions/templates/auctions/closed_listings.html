@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block page %}
+    Closed Listings
+{% endblock %}
+
+{% block body %}
+<section class="container mt-5">  
+    <!-- Listings -->  
+    {% include 'auctions/partials/listing.html' with listings=page.object_list %}
+
+    {% if has_more_than_twelve_listings %}
+        <!-- Pagination -->
+        {% include "auctions/partials/pagination.html" with url_name='auctions:closed_listings' %}
+    {% endif %}
+</section>
+{% endblock %}
